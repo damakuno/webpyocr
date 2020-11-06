@@ -14,7 +14,13 @@ window.onload = function () {
         }).then(function (res) {
             console.log(res);
             img_upload.src = res.data.url;
-            div_prediction.innerHTML = res.data.prediction;
+            let predictions = '';
+            for (let pred of res.data.prediction) {
+                if (pred) {
+                    predictions += '<li>' + pred + '</li>'
+                }
+            }
+            div_prediction.innerHTML = '<ul>' + predictions + '</ul>';
         });
     });
 }

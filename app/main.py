@@ -5,6 +5,7 @@ import os
 import magic
 import pytesseract as pt
 import cv2
+import numpy as np
 
 mime = magic.Magic(mime=True)
 
@@ -44,19 +45,49 @@ def upload_file():
             file.save(filepath)
             # return redirect(f'uploads/{filename}')
             img_cv = cv2.imread(filepath)
-            img_rgb = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
+            # img = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
+            img_ori = img_cv.copy()
+            img_gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
+            # img_invert = cv2.bitwise_not(img_gray)
+            # img_denoise = cv2.medianBlur(img_gray, 5)
+            # img_thresh = cv2.threshold(
+            #     img_denoise, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+            # kernel = np.ones((5, 5), np.uint8)
+            # img = cv2.morphologyEx(img_thresh, cv2.MORPH_OPEN, kernel)
             tessdata_dir_config = r'--tessdata-dir "./app/tessdata"'
 
             pt.pytesseract.tesseract_cmd = r'/app/.apt/usr/bin/tesseract'
 
-            prediction = pt.image_to_string(img_rgb,
-                                            lang='eng',
-                                            config=tessdata_dir_config)
+            prediction = pt.image_to_data(img_gray,
+                                          lang='eng',
+                                          config=tessdata_dir_config,
+                                          output_type=pt.Output.DICT)
+
+            d = prediction
+            n_boxes = len(d['text'])
+            for i in range(n_boxes):
+                if int(d['conf'][i]) > 60:
+                    (x, y, w, h) = (d['left'][i], d['top']
+                                    [i], d['width'][i], d['height'][i])
+                    img_ori = cv2.rectangle(
+                        img_ori, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            bb_image_path = os.path.join(
+                './app/public/uploads/images', f'bb_{filename}')
+            if os.path.exists(bb_image_path):
+                os.remove(bb_image_path)
+            cv2.imwrite(bb_image_path, img_ori)
+            # while not os.path.isfile(bb_image_path):
+            #     pass
+
+            # prediction_invert = pt.image_to_data(img_invert,
+            #                                      lang='eng',
+            #                                      config=tessdata_dir_config,
+            #                                      output_type=pt.Output.DICT)
 
             response = {
                 "mime_type": mime.from_file(filepath),
-                "url": f"/public/uploads/images/{filename}",
-                "prediction": prediction
+                "url": f"/public/uploads/images/bb_{filename}",
+                "prediction": prediction["text"]  # + prediction_invert["text"]
             }
             # with open(filepath, "rb") as image:
             #     encodedbase64 = base64.b64encode(image.read()).decode('utf-8')
