@@ -1,15 +1,15 @@
 from flask import Flask, send_from_directory
 
-app = Flask(__name__)  # , static_folder='.')
+app = Flask(__name__, static_folder='.')
 
-
-@app.route('/')
-def root():
-    return "<span>Test</span>"
 
 # @app.route('/')
 # def root():
-#     return app.send_static_file('index.html')
+#     return "<span>Test</span>"
+
+@app.route('/')
+def root():
+    return app.send_static_file('index.html')
 
 # Serves javascript files
 
