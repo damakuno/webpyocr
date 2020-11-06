@@ -1,2 +1,5 @@
 gunicorn
+Werkzeug
 Flask
+opencv-python
+pytesseract

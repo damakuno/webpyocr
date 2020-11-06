@@ -5,3 +5,10 @@ body {
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body button,
+img,
+input {
+    display: block;
+    margin: 10px;
+}

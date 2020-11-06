@@ -6,11 +6,17 @@
     <title>OCR Webservice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/main.js"></script>
 </head>
 
 <body>
-    Test
+    <div id="div_container" style="margin: 20px;">
+        Upload Image:
+        <input id="file_upload" type=file name=file>
+        <button id="btn_upload" type="button">Upload</button>
+        <img id="img_upload" src="https://via.placeholder.com/200" alt="uploaded image" />
+    </div>
 </body>
 
 </html>
