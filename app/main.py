@@ -46,6 +46,9 @@ def upload_file():
             img_cv = cv2.imread(filepath)
             img_rgb = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
             tessdata_dir_config = r'--tessdata-dir "./app/tessdata"'
+
+            pt.pytesseract.tesseract_cmd = r'/app/.apt/usr/bin/tesseract'
+
             prediction = pt.image_to_string(img_rgb,
                                             lang='eng',
                                             config=tessdata_dir_config)
