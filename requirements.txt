@@ -4,4 +4,4 @@ Flask
 opencv-python
 numpy==1.19.3
 pytesseract
-python-magic-bin==0.4.14
+python-magic
