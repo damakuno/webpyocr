@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\xun.liew\\AppData\\Local\\Continuum\\anaconda3\\envs\\ocr\\python.exe",
+    "python.pythonPath": "c:\\ProgramData\\Anaconda3\\envs\\ocr\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true
